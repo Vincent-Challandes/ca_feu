@@ -27,7 +27,6 @@ def array_expression(expression):
     # on va maintenant passé au travers chaque élément du tableau array et séparé les parenthèses
     for i in range(len(array)):
         for j in array[i]:
-            print(f"j = {j}")
             if j.isdigit():
                 result += f"{j}"
                 continue
@@ -71,25 +70,12 @@ def calculate_parenthesis(array_expression, nb_parenthesis):
             elif a[i] == ")":
                 pc.append(i)
                 break
-            print(f" po = {po}")
-            print(f" pc = {pc}")
-        print(f" a[po[0] + 1:pc[0]] = {a[po[0] + 1:pc[0]]}")
         a[po[0]:pc[0] + 1] = calculations(a[po[0] + 1:pc[0]])
         counter += 1
     return a
 
 def calculations(expr):
-    # on sépare les nombres des operateurs
-    #if type(expression) == str:
-        #expr = expression.split()
-    #else:
-        #expr = expression
-    # on parse en integer les nombres
-    #for i in range(len(expr)):
-        #if type(expr[i]) == str and expr[i].isdigit():
-            #expr[i] = int(expr[i])
-    # on commence avec "*"
-    # on cherche le nombre de chacune de nos opération dans notre array
+    # on cherche le nombre de chacune de nos opération dans notre expression ou sous-expression
     op_multiplication = 0
     op_division = 0
     op_modulo = 0
@@ -107,23 +93,19 @@ def calculations(expr):
         elif op == "-":
             op_substraction += 1
     # on traite les multiplications et divisions prioprité dans sens de lecture 
-    print(f"avant calcule {expr}")
     for i in range(op_multiplication + op_division):
         # on part de 1 car et fini à - 1 car expr[j - 1:j + 1]
         for j in range(1, len(expr) - 1):
             if expr[j] == "*":
                 # on écrase j - 1 et j + 1 par le resultat de j - 1 * j + 1
-                print(f" j - 1 = {expr[j - 1]} j + 1 = {expr[j + 1]}")
                 expr[j - 1:j + 1] = [int(expr[j - 1]) * int(expr[j + 1])]
                 # on pop pour supprimé l'élément J 
                 expr.pop(j)
                 # ATTENTION pas oublié de break pour ressortir de la boucle remettre le len(expr) à jour sinon IndexOutOfRange et levé
-                print(expr)
                 break
             elif expr[j] == "/":
                 expr[j - 1:j + 1] = [int(expr[j - 1]) / int(expr[j + 1])]
                 expr.pop(j)
-                print(expr)
                 break
     # on traite les modulos
     for i in range(op_modulo):
@@ -131,7 +113,6 @@ def calculations(expr):
             if expr[j] == "%":
                 expr[j - 1:j + 1] = [int(expr[j - 1]) % int(expr[j + 1])]
                 expr.pop(j)
-                print(expr)
                 break
     # on traite les additions et substraction priorité dans sens de lecture
     for i in range(op_addition + op_substraction):
@@ -139,12 +120,10 @@ def calculations(expr):
             if expr[j] == "+":
                 expr[j - 1:j + 1] = [int(expr[j - 1]) + int(expr[j + 1])]
                 expr.pop(j)
-                print(expr)
                 break
             if expr[j] == "-":
                 expr[j - 1:j + 1] = [int(expr[j - 1]) - int(expr[j + 1])]
                 expr.pop(j)
-                print(expr)
                 break
     return expr
 
@@ -162,11 +141,8 @@ arithmetic_expression = sys.argv[1]
 ## Resolution
 nb_parenthesis = count_parenthesis(arithmetic_expression)
 our_expression_in_array = array_expression(arithmetic_expression)
-print(f"our_expression_in_array {our_expression_in_array}")
 first_array_calculate = calculate_parenthesis(our_expression_in_array, nb_parenthesis)
-print(f"first array {first_array_calculate}")
 resultat = calculations(first_array_calculate)
-print(f"resultat {resultat}")
 
 ## Display
 display_result(resultat)
