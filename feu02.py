@@ -68,7 +68,7 @@ def find_shape(board, shape):
                 else :
                     return xb, yb, array_display
             # ici on écrase a nouveau les valeur avec "-" car nous avons pas trouvé la forme entière donc on passe a l'élément suivant du tableau.
-            array_display[yb][xb] = "-"
+            array_display = [["-" for _ in range(len(row))] for row in board]
     return None
 
 def print_position(position):
