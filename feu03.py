@@ -32,10 +32,45 @@ def is_sudoku(sudoku):
         print("Error row : is not a sudoku")
         sys.exit()
 
+def resolve_sudoku(sudoku):
+    # on check par ligne
+    for i, nb in enumerate(sudoku):
+        count_nbx = 0
+        index = ""
+        nb_unknown = 0
+        for j, nbx in enumerate(sudoku[i]):
+            if nbx != ".":
+                count_nbx += int(nbx)
+            else:
+                index = j
+                nb_unknown += 1
+        if nb_unknown == 1:
+            sudoku[i][index] = str(45 - count_nbx)
+    # on check par colonne 
+        count_nby = 0
+        index = ""
+        nb_unknown = 0
+        for nby in enumerate(sudoku[:][i]):
+            if nby != ".":
+                count_nby += int(nby)
+            else:
+                index = i
+                nb_unknown += 1
+        if nb_unknown == 1:
+            sudoku[index][i] = str(45 - count_nby)
+    return sudoku
+
+def print_2d_array(array):
+    for row in array:
+        # on concatenate tous les élément d'une ligne en une chaine de caratère et la print
+        print("".join(row))
+
+
 ## Error handling
 error_handling(sys.argv)
 sudoku = read_file(sys.argv[1])
 is_sudoku(sudoku)
 
 ## Resolution
-print("ok")
+result_sudoku = resolve_sudoku(sudoku)
+print_2d_array(result_sudoku)
