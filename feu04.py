@@ -17,6 +17,14 @@ def read_file(filename):
         print(f"Error : cannot read {filename}")
         sys.exit()
 
+def check_the_map(a_map):
+    # ici on check que ce soit bien un rectangle par qu'il manque des caractères
+    for i, row in enumerate(a_map):
+        for j, column in enumerate(a_map):
+            if len(row) != len(a_map) and len(column) != len(a_map[0]):
+                print("Error : map is not a rectangle")
+                sys.exit()
+
 def main(my_map):
     # on check que notre plateau ai plus de 1 ligne et 1 colonne 
     if len(my_map) > 1 and len(my_map[0]) > 1:
@@ -71,6 +79,7 @@ error_handling(sys.argv)
 my_map = read_file(sys.argv[1])
 
 ## Resolution
+check_the_map(my_map)
 map_with_biggest_square = main(my_map)
 
 ## Display
