@@ -1,6 +1,8 @@
 ## Modules and Functions
 import sys
 
+string_map = [".", "x"]
+
 def error_handling(arguments):
     if not len(arguments) == 2:
         print("Error need 1 file in argument as a map")
@@ -23,6 +25,9 @@ def check_the_map(a_map):
         for j, column in enumerate(a_map):
             if len(row) != len(a_map) and len(column) != len(a_map[0]):
                 print("Error : map is not a rectangle")
+                sys.exit()
+            if not a_map[i][j] in string_map:
+                print("Error : map has wrong string")
                 sys.exit()
 
 def main(my_map):
