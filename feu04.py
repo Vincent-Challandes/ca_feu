@@ -10,7 +10,7 @@ def read_file(filename):
     ##Fonction qui lit le contenu d'un fichier et retourne son contenu sous forme de liste de chaînes de caractères
     try:
         with open(filename, 'r') as f:
-            # on transforme chaque ligne "x" en sous_liste et on supprime les retour a la ligne)
+            # on transforme chaque ligne "x" en sous_liste et on supprime les retour a la ligne
             # f.readlines()[1:] permet de commencé a la seconde ligne et finir à la fin
             return [list(line.strip("\n")) for line in f.readlines()[1:]]
     except:
@@ -18,16 +18,19 @@ def read_file(filename):
         sys.exit()
 
 def main(my_map):
+    # on check que notre plateau ai plus de 1 ligne et 1 colonne 
     if len(my_map) > 1 and len(my_map[0]) > 1:
         map_y = len(my_map)
         map_x = len(my_map[0])
     else:
         print("Error : your map is not 2d")
         sys.exit()
+    # on défini le plus grand carré possible qui rentre sur le plateau
     if map_y >= map_x :
         size_square = map_x
     else:
         size_square = map_y
+    # la on part du plus grand carré et on regarde si il se place sur le plateau sinon on boucle avec a chaque tour un carré plus petit de 1 
     while size_square > 0:
         result = find_biggest_square(my_map, size_square, map_x, map_y)
         if not result == False:
@@ -39,7 +42,7 @@ def find_biggest_square(my_map, size_square_to_find, x, y):
     # on place le curseur pour le départ du check du carré en haut à gauche
     for ym in range(y - size_square_to_find + 1):
             for xm in range(x - size_square_to_find + 1):
-                # on cheque tous le carré
+                # on cheque toute la surface du carré si on trouve un obstacle on déplace le curseur de départ
                 found_obstacle = False
                 for ys in range(size_square_to_find):
                     for xs in range(size_square_to_find):
@@ -48,6 +51,7 @@ def find_biggest_square(my_map, size_square_to_find, x, y):
                             break
                     if found_obstacle:
                         break
+                # si notre carré trouve une place on imprime son emplacement avec des "o"
                 if not found_obstacle:
                     for ys in range(size_square_to_find):
                         for xs in range(size_square_to_find):
