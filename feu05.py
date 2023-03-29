@@ -144,18 +144,18 @@ labyrinthe_init = read_file(sys.argv[1])
 
 ## Resolution
 check_laby(labyrinthe_init)
-
-
+# on print en premier les infos qui on été utilisé pour la generation du labyrinthe
 for row in labyrinthe_init:
     if row == labyrinthe_init[0]:
         print("".join(row))
 print()
-
+# on print le labyrinthe avant resolution
 print("Labyrinthe au départ :")
 print_2d_array(labyrinthe_init[1:])
 print()
-
+# on resoud le labyrinthe
 labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
+# on print le resultat
 print("Solution la plus courte pour sortir du labyrinthe")
 print_2d_array(labyrinthe_solve)
 print()
