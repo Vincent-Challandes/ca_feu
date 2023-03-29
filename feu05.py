@@ -36,31 +36,24 @@ def check_laby(laby):
                 sys.exit()
 
 def solve_laby(labyrinthe):
-    print("fonction solve")
     info = labyrinthe[0]
     wall = info[-5]
     path_symbol = info[-3]
-    laby = labyrinthe[1:]
-  
+    laby = labyrinthe[1:] 
     start = ""
-    nb_target = 0
     targets = []
     # on cherche la position de départ ainsi que les positions des sorties
     for i in range(len(laby)):
         for j in range(len(laby[i])):
             if laby[i][j] == info[-2]:
                 start = i, j
-
             elif laby[i][j] == info[-1]:
-                nb_target += 1
                 target = i, j
                 targets.append(target)
-
-    print(start)
-    print(targets)    
-    print(wall)
+    # on cherche le chemin le plus cours avec la fonction my_bfs
     path = my_bfs(laby, start, targets, wall)
-    return display_result_laby(laby, path, path_symbol)
+    # on print le chemin trouvé sur le labyrinthe
+    return display_path_laby(laby, path, path_symbol)
 
 # algorithme de recherche en largeur BFS implémenté par une boucle while.
 # le principe on avance 1 pas puis on étudie toutes les possibilités. 
@@ -73,11 +66,15 @@ def my_bfs(array_2d, start, target, wall):
     visited = set()  # ensemble pour stocker les nœuds visités
     # la fonction Queue() permet d'impiler des élément en les ajoutant dans l'ordre d'arrivé avec put() et en retirer le premier element arriver avec get()
     queue = Queue()  # file pour stocker les nœuds à visiter
+    # on va utilisé un dico "parents" qui permet pour chaque pas d'enregistré la position précédente
+    # de cette manière une fois qu'on arrive à la sorti on bouclera le dico parents en remontant pas à pas jusqu'a l'entrée du labyrinthe
     parents = {}  # dictionnaire pour stocker les parents de chaque nœud visité
     
     # Ajouter le nœud de départ à la file
     queue.put(start)
-    parents[tuple(start)] = None
+    # ici on ajoute comme première valeur au dico parents None
+    # de cette manière quand on reviendra en arrière pour tracer le chemin une fois arrivé au début on pourra stoppé le tracage
+    parents[start] = None
 
     while not queue.empty():
         # Retirer le premier nœud de la file
@@ -88,6 +85,7 @@ def my_bfs(array_2d, start, target, wall):
         if current in target:
             # Reconstituer le chemin parcouru à partir des parents
             path = []
+            # ici chaque clé current renvoi la valeur current du pas d'avant, de cette manière on remonte jusqu'au début
             while current != start:
                 path.append(current)
                 current = parents[current]
@@ -99,28 +97,32 @@ def my_bfs(array_2d, start, target, wall):
         if row > 0 and array_2d[row-1][col] != wall and (row-1, col) not in visited:
             queue.put((row-1, col))
             visited.add((row-1, col))
+            # on enregistre dans le dictionnaire la position ou l'on se trouve pour la clé du pas suivant
             parents[(row-1, col)] = current
         # voisin d'en bas
         if row < rows-1 and array_2d[row+1][col] != wall and (row+1, col) not in visited:
             queue.put((row+1, col))
             visited.add((row+1, col))
+            # on enregistre dans le dictionnaire la position ou l'on se trouve pour la clé du pas suivant
             parents[(row+1, col)] = current
         # voisin de gauche
         if col > 0 and array_2d[row][col-1] != wall and (row, col-1) not in visited:
             queue.put((row, col-1))
             visited.add((row, col-1))
+            # on enregistre dans le dictionnaire la position ou l'on se trouve pour la clé du pas suivant
             parents[(row, col-1)] = current
         # voisin de droite
         if col < cols-1 and array_2d[row][col+1] != wall and (row, col+1) not in visited:
             queue.put((row, col+1))
             visited.add((row, col+1))
+            # on enregistre dans le dictionnaire la position ou l'on se trouve pour la clé du pas suivant
             parents[(row, col+1)] = current
     
     # Le nœud cible n'a pas été trouvé
     return None
 
 # Ici on vient tracé le chemin sur le labyrinthe
-def display_result_laby(labyrinthe, path, symbol):
+def display_path_laby(labyrinthe, path, symbol):
     # -1 pour pas changé le symbole de la sortie
     for coords in path[:-1]:
         row, col = coords
@@ -141,9 +143,11 @@ labyrinthe_init = read_file(sys.argv[1])
 ## Resolution
 check_laby(labyrinthe_init)
 labyrinthe_solve = solve_laby(labyrinthe_init)
+
+## Display
 print("Labyrinthe au départ :")
 print_2d_array(labyrinthe_init[1:])
 print()
 print("Solution la plus courte pour sortir du labyrinthe")
-print(labyrinthe_solve)
 print_2d_array(labyrinthe_solve)
+print()
