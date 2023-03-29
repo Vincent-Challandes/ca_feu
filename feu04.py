@@ -21,12 +21,15 @@ def read_file(filename):
 
 def check_the_map(a_map):
     # ici on check que ce soit bien un rectangle par qu'il manque des caractères
-    for i, row in enumerate(a_map):
-        for j, column in enumerate(a_map):
-            if len(row) != len(a_map) and len(column) != len(a_map[0]):
-                print("Error : map is not a rectangle")
-                sys.exit()
-            if not a_map[i][j] in string_map:
+    width = len(a_map[0])
+    for row in a_map:
+        if len(row) != width:
+            print("Error : map is not a rectangle")
+            sys.exit()
+    # On vérifie que toutes les chaînes de caractères sont valides
+    for row in a_map:
+        for char in row:
+            if char not in string_map:
                 print("Error : map has wrong string")
                 sys.exit()
 
