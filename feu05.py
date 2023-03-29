@@ -124,10 +124,12 @@ def my_bfs(array_2d, start, target, wall):
 # Ici on vient tracé le chemin sur le labyrinthe
 def display_path_laby(labyrinthe, path, symbol):
     # -1 pour pas changé le symbole de la sortie
+    nb_step = 0
     for coords in path[:-1]:
         row, col = coords
         labyrinthe[row][col] = symbol
-    return labyrinthe
+        nb_step += 1
+    return labyrinthe, nb_step
 
 def print_2d_array(array):
     for row in array:
@@ -142,7 +144,7 @@ labyrinthe_init = read_file(sys.argv[1])
 
 ## Resolution
 check_laby(labyrinthe_init)
-labyrinthe_solve = solve_laby(labyrinthe_init)
+labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
 
 ## Display
 print("Labyrinthe au départ :")
@@ -151,3 +153,4 @@ print()
 print("Solution la plus courte pour sortir du labyrinthe")
 print_2d_array(labyrinthe_solve)
 print()
+print(f"=> SORTIE ATTEINTE EN {nb_step} COUPS !")
