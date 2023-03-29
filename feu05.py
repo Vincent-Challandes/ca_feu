@@ -144,13 +144,20 @@ labyrinthe_init = read_file(sys.argv[1])
 
 ## Resolution
 check_laby(labyrinthe_init)
-labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
 
-## Display
+
+for row in labyrinthe_init:
+    if row == labyrinthe_init[0]:
+        print("".join(row))
+print()
+
 print("Labyrinthe au départ :")
 print_2d_array(labyrinthe_init[1:])
 print()
+
+labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
 print("Solution la plus courte pour sortir du labyrinthe")
 print_2d_array(labyrinthe_solve)
 print()
 print(f"=> SORTIE ATTEINTE EN {nb_step} COUPS !")
+print()
