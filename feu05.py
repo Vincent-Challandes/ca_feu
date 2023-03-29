@@ -154,7 +154,12 @@ print("Labyrinthe au départ :")
 print_2d_array(labyrinthe_init[1:])
 print()
 # on resoud le labyrinthe
-labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
+try:
+    labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
+except:
+    print(f"Error : maze is not conform!")
+    sys.exit()
+
 # on print le resultat
 print("Solution la plus courte pour sortir du labyrinthe")
 print_2d_array(labyrinthe_solve)
