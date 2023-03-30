@@ -36,24 +36,29 @@ def check_laby(laby):
                 sys.exit()
 
 def solve_laby(labyrinthe):
-    info = labyrinthe[0]
-    wall = info[-5]
-    path_symbol = info[-3]
-    laby = labyrinthe[1:] 
-    start = ""
-    targets = []
-    # on cherche la position de départ ainsi que les positions des sorties
-    for i in range(len(laby)):
-        for j in range(len(laby[i])):
-            if laby[i][j] == info[-2]:
-                start = i, j
-            elif laby[i][j] == info[-1]:
-                target = i, j
-                targets.append(target)
-    # on cherche le chemin le plus cours avec la fonction my_bfs
-    path = my_bfs(laby, start, targets, wall)
-    # on print le chemin trouvé sur le labyrinthe
-    return display_path_laby(laby, path, path_symbol)
+    try:
+        info = labyrinthe[0]
+        wall = info[-5]
+        path_symbol = info[-3]
+        laby = labyrinthe[1:] 
+        start = ""
+        targets = []
+        # on cherche la position de départ ainsi que les positions des sorties
+        for i in range(len(laby)):
+            for j in range(len(laby[i])):
+                if laby[i][j] == info[-2]:
+                    start = i, j
+                elif laby[i][j] == info[-1]:
+                    target = i, j
+                    targets.append(target)
+        # on cherche le chemin le plus cours avec la fonction my_bfs
+        path = my_bfs(laby, start, targets, wall)
+        # on print le chemin trouvé sur le labyrinthe
+        return display_path_laby(laby, path, path_symbol)
+    except:
+        print(f"Error : maze is not conform!")
+        sys.exit()
+
 
 # algorithme de recherche en largeur BFS implémenté par une boucle while.
 # le principe on avance 1 pas puis on étudie toutes les possibilités. 
@@ -141,25 +146,24 @@ error_handling(sys.argv)
 
 ## Parsing
 labyrinthe_init = read_file(sys.argv[1])
+labyrinthe_start = read_file(sys.argv[1])
 
 ## Resolution
+# on check que le laby soit ok
 check_laby(labyrinthe_init)
+# on resoud le labyrinthe
+labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
+
+## Display
 # on print en premier les infos qui on été utilisé pour la generation du labyrinthe
-for row in labyrinthe_init:
-    if row == labyrinthe_init[0]:
+for row in labyrinthe_start:
+    if row == labyrinthe_start[0]:
         print("".join(row))
 print()
 # on print le labyrinthe avant resolution
 print("Labyrinthe au départ :")
-print_2d_array(labyrinthe_init[1:])
+print_2d_array(labyrinthe_start[1:])
 print()
-# on resoud le labyrinthe
-try:
-    labyrinthe_solve, nb_step = solve_laby(labyrinthe_init)
-except:
-    print(f"Error : maze is not conform!")
-    sys.exit()
-
 # on print le resultat
 print("Solution la plus courte pour sortir du labyrinthe")
 print_2d_array(labyrinthe_solve)
